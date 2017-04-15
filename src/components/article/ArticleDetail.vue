@@ -179,7 +179,7 @@
 		.rich-content {
 			line-height: 1.4;
 			word-wrap: break-word;
-			img{max-width: 100%}
+			img{max-width: 100%; display: block; margin: 0 auto}
 		}
 		.atc-data {
 			margin-top: 10px;

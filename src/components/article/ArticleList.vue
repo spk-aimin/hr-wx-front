@@ -152,7 +152,7 @@
 					height: 50px;
 				}
 				table td:last-child {
-					width: 50px
+					width: 50px;
 				}
 				.title {
 					font-size: 16px;
@@ -164,7 +164,7 @@
 					display: block;
 					width: 50px;
 					overflow: hidden;
-					height: 50px
+					height: 50px;
 					img {
 						width: 100%;
 					}
