@@ -4,6 +4,7 @@
 </template>
 <script>
     import {apiService, apiUrl, urlParams} from '@/api'
+    window.userInfoId = -1;
     export default {
     	created() {
     		 var userId =4;
@@ -32,21 +33,31 @@
     		 	default : name = 'welcome';
     		 }
     		 console.log(name, type, value, code);
-    		 apiService.requestGet(apiUrl.baseUrl +"oauth/getCode/" +  code).then((res)=>{
-    		 	console.log(res);
-    		 	if(res.data){
-				 	userId = res.data.id;
-				 	this.$router.push({name: name, query: {
-				 		itemid: itemid,
-				 		code: code,
-				 		id: articleid,
-				 		userId: userId
-				 	}});
-    		 	}
+    		 if(window.userInfoId == -1){
+    		 		 apiService.requestGet(apiUrl.baseUrl +"oauth/getCode/" +  code).then((res)=>{
+		    		 	console.log(res);
+		    		 	if(res.data){
+						 	userId = res.data.id;
+						 	window.userInfoId = userId;
+						 	this.$router.push({name: name, query: {
+						 		itemid: itemid,
+						 		id: articleid,
+						 		userId: userId
+						 	}});
+		    		 	}
+		    	
+		    		 }, (res)=>{
+		    		 	console.log("失败");
+		    		 })
+		 		}else{
+		 			userId = window.userInfoId;
+	 				this.$router.push({name: name, query: {
+					 		itemid: itemid,
+					 		id: articleid,
+					 		userId: userId
+					 	}});
+		 		}
     	
-    		 }, (res)=>{
-    		 	console.log("失败");
-    		 })
     	}
     }
 </script>
