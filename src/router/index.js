@@ -6,12 +6,18 @@ import Router from 'vue-router'
 import ArticleList from '@/components/article/ArticleList'
 import ArticleDetail from '@/components/article/ArticleDetail'
 import WriteComment from '@/components/article/WriteComment'
+import Welcome from '@/components/Welcome'
 
 Vue.use(Router);
 
 
-let routes = [{//文章列表
-      path: '/',
+let routes = [{
+       path: '/',
+       name: 'welcome',
+       component: Welcome
+    },
+    {//文章列表
+      path: '/article-list',
       name: 'article.list',
       component: ArticleList
     }, {//文章

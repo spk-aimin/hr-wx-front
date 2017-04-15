@@ -23,14 +23,26 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 8090,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        "/DataServer/**":{
-            target: "http://rapapi.org/mockjsdata/16782/",
-            changeOrigin:true
+        // "/DataServer/**":{
+        //     target: "http://rapapi.org/mockjsdata/16782/",
+        //     changeOrigin:true
+        // },
+        "/oauth/**": {
+            target: "http://123.207.119.252/",
+            changeOrigin: true
+        },
+        "/article/**": {
+            target: "http://123.207.119.252/",
+            changeOrigin: true
+        },
+        "/judge/**": {
+             target: "http://123.207.119.252/",
+            changeOrigin: true
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

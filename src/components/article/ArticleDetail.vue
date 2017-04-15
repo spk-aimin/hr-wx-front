@@ -3,7 +3,7 @@
 		<div class="atc-container">
 			<h2 class="atc-title">{{articleInfo.title}}</h2>
 			<div class="tm-con">
-				<span class="g-tx">{{articleInfo.createTime}}</span>
+				<span class="g-tx">{{articleInfo.createTime | dateParse}}</span>
 				<span class="g-tx">{{articleInfo.createUserName}}</span>
 				<a :href="articleInfo.linkOut" class="l-tx">{{articleInfo.itemName}}</a>
 			</div>
@@ -11,7 +11,10 @@
 			</div>
 			<div class="atc-data">
 				<span class="g-tx">阅读 {{articleInfo.readCount}}</span>
-				<span class="g-tx"><i class="fa fa-thumbs-o-up"></i> 15</span><!-- thumbs-up-->
+				<span class="g-tx" @click="operPraise()">
+				    <!--{"fa-thumbs-o-up":!articleInfo.attach.praise, "thumbs-up":articleInfo.attach.praise}-->
+				    <i class="fa" :class='articleInfo.attach.praise?"fa-thumbs-up":"fa-thumbs-o-up"'></i> {{praiseCount}}
+				</span><!-- thumbs-up-->
 				<a class="t-su">投诉</a>
 			</div>
 		</div>
@@ -22,7 +25,7 @@
 				<p class="line"></p>
 			</div>
 			<div class="w-comment">
-				<router-link :to = '{name:"article.writeComment", query:{articleId: articleId, title: articleInfo.title}}'>写留言&nbsp;<i class="fa fa-pencil"></i></router-link>
+				<router-link :to = '{name:"article.writeComment", query:{articleId: articleId, title: articleInfo.title, userId: userId}}'>写留言&nbsp;<i class="fa fa-pencil"></i></router-link>
 			</div>
 			<ul>
 				<li class="com-item" v-for="item in comments">
@@ -63,7 +66,10 @@
 					pageNum: 0
 				},
 				isLoadComment: false,
-				isMoreComment:true
+				isMoreComment:true,
+				code: "",
+				praiseCount: 0,
+				userId: ""
 			}
 		},
 		components: {
@@ -73,7 +79,7 @@
 			getComment(){//加载评论
 				var vm =this;
 				vm.isLoadComment = true;
-				apiService.requestGet(apiUrl.baseUrl + "judge/getJudge/"+vm.commentParams.pageNum+"/"+vm.commentParams.pageSize).then((res)=>{
+				apiService.requestGet(apiUrl.baseUrl + "judge/getJudge/"+vm.articleId+"/"+vm.commentParams.pageNum).then((res)=>{
 					if(res.data.length != 0){
 						for(var item of res.data){
 							vm.comments.push(item);
@@ -93,15 +99,37 @@
 				var vm = this;
 				vm.commentParams.pageNum += 1;
 				vm.getComment();
+			},
+			operPraise() {
+				var vm = this;
+				if(vm.articleInfo.attach.praise){
+					apiService.requestGet(apiUrl.baseUrl+ "judge/praiseCancle/" + vm.articleId+ "/" + vm.userId ).then((res)=>{
+						vm.articleInfo.attach.praise = false;
+						vm.praiseCount = vm.praiseCount -1;
+					}, (res)=> {
+						console.log(res.msg)
+					})
+				}else {
+						apiService.requestGet(apiUrl.baseUrl+ "judge/praise/" + vm.articleId+ "/" + vm.userId ).then((res)=>{
+						vm.articleInfo.attach.praise = true;
+						vm.praiseCount = vm.praiseCount + 1;
+					}, (res)=> {
+						console.log(res.msg)
+					})
+				}
 			}
 		},
 		created() {
 			var vm = this;
 			vm.articleId = this.$route.query.id;
-			apiService.requestGet(apiUrl.baseUrl + "article/getArticleDetail/" + vm.articleId).then((res)=> {
+			vm.code = this.$route.query.code;
+			vm.userId= this.$route.query.userId;
+			apiService.requestGet(apiUrl.baseUrl + "article/getArticleDetail/" + vm.articleId + "/"+vm.userId).then((res)=> {
 				vm.articleInfo = res.data;
 				vm.getComment();
 				vm.isShowPage= true;
+				vm.praiseCount =parseInt(vm.articleInfo.attach.praiseCount);
+				vm.userId = vm.articleInfo.attach.userId;
 			}, (res)=>{
 				console.log("服务器错误");
 			}).catch((e)=>{
@@ -231,6 +259,8 @@
 					img{width: 100%}
 				}
 				.msg {
+					padding-left: 10px;
+					-webkit-box-flex:1;
 					.m-top {
 						height: 24px;
 						u-name {

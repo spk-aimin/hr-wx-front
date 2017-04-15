@@ -2,6 +2,7 @@ import Promise from 'promise'
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import url from './apiUrl'
+import UrlParams from './urlParams'
 
 Vue.use(VueResource);
 export class ApiService {
@@ -57,3 +58,4 @@ export class ApiService {
 } */
 export const apiService = new ApiService();
 export const apiUrl = url
+export const urlParams = UrlParams

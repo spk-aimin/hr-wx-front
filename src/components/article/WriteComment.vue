@@ -19,7 +19,8 @@
 				commentContent: "",
 				articleTitle: "",
 				articleId: 0,
-				isEmpty:true
+				isEmpty:true,
+				userId: ""
 			}
 		},
 		components: {
@@ -31,8 +32,8 @@
 				if(vm.commentContent.trim() == ""){
 					return;
 				}
-				apiService.requestGet(apiUrl.baseUrl + "/judge/addJudge", {content: vm.commentContent, articleId: vm.articleId}).then ((res)=>{
-					window.location.href = window.location.origin+"/#/article-detail?id="+vm.articleId;
+				apiService.requestGet(apiUrl.baseUrl + "judge/addJudge", {content: vm.commentContent, articleid: vm.articleId, userid: vm.userId}).then ((res)=>{
+					this.$router.push({name: 'article.detail', query: {id: vm.articleId, userId: vm.userId}})
 				},(res)=>{
 					console.log("服务器错误");
 				})
@@ -50,6 +51,7 @@
 			var vm = this;
 			vm.articleTitle = vm.$route.query.title;
 			vm.articleId = vm.$route.query.articleId;
+			vm.userId = vm.$route.query.userId;
 		},
 		computed: {
 

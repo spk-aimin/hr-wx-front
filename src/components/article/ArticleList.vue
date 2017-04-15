@@ -3,21 +3,21 @@
 		<ul class="list" >
 			<template v-for = "(item, index) in dataList">
 				<li v-if ="index == 0">
-					<router-link class="li1" :to = '{name: "article.detail", query: {id: item.id}}'>
+					<router-link class="li1" :to = '{name: "article.detail", query: {id: item.id, userId: userId}}'>
 						<div class="img-box">
-							<img :src="item.titleImage">
+							<img :src="origin+item.titleImage">
 							<p class="title">{{item.title}}</p>
 						</div>
 					</router-link>
 				</li>
 				<li class="li2" v-if="index !=0">
-					<router-link  class = 'tr' :to='{name: "article.detail", query: {id: item.id}}'>
+					<router-link  class = 'tr' :to='{name: "article.detail", query: {id: item.id, userId: userId}}'>
 						<table>
 							<tr>
 								<td class="title">{{item.title}}</td>
 								<td>
 									<div class="img-box">
-										<img :src="item.titleImage">
+										<img :src="origin + item.titleImage">
 									</div>
 							   </td>
 							</tr>
@@ -43,20 +43,28 @@
 				dataList: [],
 				paramList: {//文章列表
 					pageNum: 0,
-					pageSize: 2
+					pageSize: 2,
+					itemid: ""
 				},
 				isLoad:false,
-				isNext: true
+				isNext: true,
+				code: '',
+				origin: '',
+				userId: 0
 			}
 		},
 		created() {
 			var vm = this;
+			vm.paramList.itemid = this.$route.query.itemid;
+			vm.code = this.$route.query.code;
+			vm.userId = this.$route.query.userId;
+			vm.origin = window.location.origin
 			vm.getArticleList();
 		},
 		methods: {
 			getArticleList() {//获取文章列表
 				var vm = this;
-				var url = apiUrl.baseUrl + "article/getArticle/"+ vm.paramList.pageNum+ "/" + vm.paramList.pageSize;
+				var url = apiUrl.baseUrl + "article/getArticle/"+ vm.paramList.pageNum+ "/" + vm.paramList.pageSize+ '/'+ vm.paramList.itemid;
 				apiService.requestGet(url).then((res)=> {
 					if(res.data.length != 0){
 						for(var item of res.data){
