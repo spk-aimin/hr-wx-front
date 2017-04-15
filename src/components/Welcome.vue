@@ -33,13 +33,17 @@
     		 }
     		 console.log(name, type, value, code);
     		 apiService.requestGet(apiUrl.baseUrl +"oauth/getCode/" +  code).then((res)=>{
-    		 	userId = res.data.id;
-    		 	this.$route.router.push({name: name, query: {
-    		 		itemid: itemid,
-    		 		code: code,
-    		 		id: articleid,
-    		 		userId: userId
-    		 	}});
+    		 	console.log(res);
+    		 	if(res.data){
+				 	userId = res.data.id;
+				 	this.$router.push({name: name, query: {
+				 		itemid: itemid,
+				 		code: code,
+				 		id: articleid,
+				 		userId: userId
+				 	}});
+    		 	}
+    	
     		 }, (res)=>{
     		 	console.log("失败");
     		 })
