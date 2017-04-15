@@ -149,7 +149,6 @@
 					width: 100%;
 				}
 				table td {
-					height: 50px;
 				}
 				table td:last-child {
 					width: 50px;
@@ -164,7 +163,7 @@
 					display: block;
 					width: 50px;
 					overflow: hidden;
-					height: 50px;
+					//max-height: 50px;
 					img {
 						width: 100%;
 					}
