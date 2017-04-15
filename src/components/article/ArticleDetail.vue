@@ -1,6 +1,6 @@
 <template>
 	<div id= "article-detail" v-if="isShowPage">
-		<div class="atc-container">
+		<div class="atc-container" v-if="articleInfo">
 			<h2 class="atc-title">{{articleInfo.title}}</h2>
 			<div class="tm-con">
 				<span class="g-tx">{{articleInfo.createTime | dateParse}}</span>

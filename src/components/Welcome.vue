@@ -6,26 +6,35 @@
     import {apiService, apiUrl, urlParams} from '@/api'
     export default {
     	created() {
-    		var userId =4;
-    		 var type = urlParams('type');
-    		 var articleid = urlParams('articleid');
+    		 var userId =4;
+    		 var types = urlParams("type");
+    		 var type , value;
+    		 try{
+    		  type = types.split("_")[0];
+    		  value = types.split("_")[1];
+    		 }catch(e){
+    		 	type="";
+    		 	value="";
+    		 }
+    		 var articleid = "";
     		 var code = urlParams('code');
-    		 var itemid = urlParams('itemid');
+    		 var itemid = "";
     		 var name = "";
     		 switch (type){
-    		 	case 'article-list': name= 'article.list'; break;
-    		 	case 'article-detail': name = 'article.detail'; break;
+    		 	case 'article-list': 
+    		 	      name= 'article.list'; 
+    		 	      itemid= value; 
+    		 	      break;
+    		 	case 'article-detail': 
+    		 	      name = 'article.detail'; 
+    		 	      articleid = value;
+    		 	      break;
     		 	default : name = 'welcome';
     		 }
-    		 this.$router.push({name: name, query: {
-    		 		itemid: itemid,
-    		 		code: code,
-    		 		id: articleid,
-    		 		userId: userId
-    		 	}});
+    		 console.log(name, type, value, code);
     		 apiService.requestGet(apiUrl.baseUrl +"oauth/getCode/" +  code).then((res)=>{
     		 	userId = res.data.id;
-    		 	this.$route.router.go({name: name, query: {
+    		 	this.$route.router.push({name: name, query: {
     		 		itemid: itemid,
     		 		code: code,
     		 		id: articleid,
