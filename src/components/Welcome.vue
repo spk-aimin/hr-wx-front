@@ -50,12 +50,8 @@
 		    		 	console.log("失败");
 		    		 })
 		 		}else{
-		 			userId = window.userInfoId;
-	 				this.$router.push({name: name, query: {
-					 		itemid: itemid,
-					 		id: articleid,
-					 		userId: userId
-					 	}});
+		 			this.$router.go(-1);
+		 			window.close();
 		 		}
     	
     	}
