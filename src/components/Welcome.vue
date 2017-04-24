@@ -50,7 +50,7 @@
 		    		 	console.log("失败");
 		    		 })
 		 		}else{
-		 			this.$router.go(-1);
+		 			window.history.go(-1);
 		 			window.close();
 		 		}
     	

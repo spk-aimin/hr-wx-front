@@ -5,7 +5,8 @@
 			<div class="tm-con">
 				<span class="g-tx">{{articleInfo.createTime | dateParse}}</span>
 				<span class="g-tx">{{articleInfo.itemName}}</span>
-				<a :href="articleInfo.linkOut" class="l-tx">{{articleInfo.createUserName}}</a>
+		<!-- 		<a :href="articleInfo.linkOut" class="l-tx">{{articleInfo.createUserName}}</a> -->
+				<a href="javascript:;" class="l-tx">{{articleInfo.createUserName}}</a>
 			</div>
 			<div class="rich-content" v-html= "articleInfo.content">
 			</div>

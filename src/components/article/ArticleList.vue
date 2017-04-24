@@ -1,29 +1,34 @@
 <template>
 	<div id= "article-list" v-if="dataList.length >0">
 		<ul class="list" >
-			<template v-for = "(item, index) in dataList">
-				<li v-if ="index == 0">
-					<router-link class="li1" :to = '{name: "article.detail", query: {id: item.id, userId: userId}}'>
-						<div class="img-box">
-							<img :src="origin+item.titleImage">
-							<p class="title">{{item.title}}</p>
-						</div>
-					</router-link>
-				</li>
-				<li class="li2" v-if="index !=0">
-					<router-link  class = 'tr' :to='{name: "article.detail", query: {id: item.id, userId: userId}}'>
-						<table>
-							<tr>
-								<td class="title">{{item.title}}</td>
-								<td>
-									<div class="img-box">
-										<img :src="origin + item.titleImage">
-									</div>
-							   </td>
-							</tr>
-						</table>
-					</router-link>
-				</li>
+			<template v-for = "ptem in dataList">
+			  <template v-for="(item, index) in ptem">
+				  	<li v-if ="index == 0" class="li1">
+				  	    <div class="time">
+				  	    	<span class="dd">{{item.createTime | listTime}}</span>
+				  	    </div>
+						<router-link :to = '{name: "article.detail", query: {id: item.id, userId: userId}}'>
+							<div class="img-box">
+								<img :src="origin+item.titleImage">
+								<p class="title">{{item.title}}</p>
+							</div>
+						</router-link>
+					</li>
+					<li class="li2" v-if="index !=0">
+						<router-link  class = 'tr' :to='{name: "article.detail", query: {id: item.id, userId: userId}}'>
+							<table>
+								<tr>
+									<td class="title">{{item.title}}</td>
+									<td>
+										<div class="img-box">
+											<img :src="item.titleImage">
+										</div>
+								   </td>
+								</tr>
+							</table>
+						</router-link>
+					</li>
+			  </template>
 			</template>
 		</ul>
 		<div v-if="!isLoad&&isNext" class="load" @click = "getArticleListMore()">点击加载更多</div>
@@ -67,9 +72,10 @@
 				var url = apiUrl.baseUrl + "article/getArticle/"+ vm.paramList.pageNum+ "/" + vm.paramList.pageSize+ '/'+ vm.paramList.itemid;
 				apiService.requestGet(url).then((res)=> {
 					if(res.data.length != 0){
-						for(var item of res.data){
-							vm.dataList.push(item);
-						}
+						vm.dataList.push(res.data);
+						// for(var item of res.data){
+						// 	vm.dataList.push(item);
+						// }
 						vm.isNext = true;
 					}else {
 						vm.isNext =false;
@@ -95,6 +101,65 @@
 		},
 		watch: {
 
+		},
+		filters: {
+			listTime (val){
+			var week = ['星期日', '星期一','星期二' ,'星期三' ,'星期四','星期五', '星期六'];
+			function getTime(tm){
+				var date = new Date(tm);
+				return {
+					y: date.getFullYear(),
+					m: date.getMonth()+1,
+					d: date.getDate(),
+					h: date.getHours(),
+					min: date.getMinutes(),
+					w: date.getDay()
+				}
+			}
+			function twoParse(val){
+				var v = val.toString();
+				return v.length == 2 ? v: '0'+ v;
+			}
+
+			function hpp (val){
+				var tep = "";
+				if(so.h - 12 < 0){
+					tep = '上午 ' + so.h;
+				}else if(so.h - 12 ==0) {
+					tep = '中午 ' + so.h;
+				}else {
+					tep = '下午 ' + (so.h - 12);
+				}
+
+
+				return tep;
+			}
+
+			function wpp (val){
+				return week[val];
+			}
+				var now = new Date();
+				var sd = new Date(val);
+				var no = getTime(now.getTime());
+				var so = getTime(sd.getTime());
+				var h2 = 48*60*60*1000;
+
+				var d7 = 24*60*60*1000*6;
+				if(now.getTime() - sd.getTime() < h2){
+					if(no.d - so.d  == 0){
+						return hpp(so.h) + ':' + twoParse(so.min);
+					} else if (no.d - so.d == 1){
+						return '昨天 '+ hpp(so.h) + ':' + twoParse(so.min);
+					} else {
+						return week[so.w]  + hpp(so.h) + ':' + twoParse(so.min);
+					}
+				}else if(now.getTime() - sd.getTime() < d7){
+					return week[so.w]  + hpp(so.h) + ':' + twoParse(so.min);
+
+				} else {
+					 return  so.y + '年' + so.m+ '月' + so.d + '日  ' + hpp(so.h) + ':' + twoParse(so.min);
+				}
+			}
 		}
 	}
 </script>
@@ -102,19 +167,38 @@
 	#article-list{
 		.list {
 			a:link{
-			color: #1062a9;
+			color: #333;
 			}
 			a:active{
-				color: #1062a9;
+				color: #333;
 			}
 			a:visited {
-				color: #1062a9;
+				color: #333;
 			}
 			padding: 15px 7px 7px 7px;
-			background-color: #fff;
 			.li1 {
+				.time {
+					position: absolute;
+					width: 100%;
+					font-size: 12px;
+					height: 20px;
+					line-height: 20px;
+					text-align: center;
+					top: -40px;
+					.dd {
+						padding: 0 6px;
+						color: #fff;
+						background-color: rgba(0,0,0,0.4);
+						border-radius: 5px;
+						display: inline-block;
+					}
+				}
 				display: block;
 				padding-bottom: 7px;
+				padding-top: 7px;
+				margin-top: 60px;
+				background-color:#fff;
+				position: relative;
 				.img-box {
 					width: 100%;
 					//height: 6rem;
@@ -124,6 +208,7 @@
 					overflow: hidden;
 					img {
 						width: 100%;
+						display: block;
 					}
 					.title{
 						background-color: rgba(0,0,0,.6);
@@ -141,6 +226,7 @@
 				}
 			}
 			.li2 {
+				background-color:#fff;
 				display: block;
 				padding: 8px 0;
 				border-top: solid 1px #e5e5e5;
@@ -166,6 +252,7 @@
 					//max-height: 50px;
 					img {
 						width: 100%;
+						display: block;
 					}
 				}
 			}
