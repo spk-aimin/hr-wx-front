@@ -12,7 +12,7 @@ window.userId=""
 
 Vue.config.productionTip = false
 router.beforeEach((to, from, next)=>{
-	if(window.userId === "" && to.path == '/'){
+	if(window.userId === "" || to.path == '/'){
 		    		 var userId =4;
     		 var types = urlParams("type");
     		 var type , value;
