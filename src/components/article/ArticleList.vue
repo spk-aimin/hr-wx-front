@@ -9,7 +9,7 @@
 				  	    </div>
 						<router-link :to = '{name: "article.detail", query: {id: item.id, userId: userId}}'>
 							<div class="img-box">
-								<img :src="origin+item.titleImage">
+								<img :src="item.titleImage">
 								<p class="title">{{item.title}}</p>
 							</div>
 						</router-link>
