@@ -4,7 +4,6 @@
 </template>
 <script>
     import {apiService, apiUrl, urlParams} from '@/api'
-    window.userInfoId = -1;
     export default {
     	created() {
     		 var userId =4;
@@ -39,19 +38,22 @@
 		    		 	if(res.data){
 						 	userId = res.data.id;
 						 	window.userInfoId = userId;
-						 	this.$router.push({name: name, query: {
-						 		itemid: itemid,
-						 		id: articleid,
-						 		userId: userId
-						 	}});
-		    		 	}
+						 	
+		    		 	}else{
+                            window.userInfoId = 0;
+                            userId =0;
+                        }
+                        this.$router.push({name: name, query: {
+                                itemid: itemid,
+                                id: articleid,
+                                userId: userId
+                            }});
 		    	
 		    		 }, (res)=>{
 		    		 	console.log("失败");
 		    		 })
 		 		}else{
-		 			window.history.go(-1);
-		 			window.close();
+                    wx.closeWindow();
 		 		}
     	
     	}

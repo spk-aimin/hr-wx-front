@@ -48,7 +48,7 @@
 				dataList: [],
 				paramList: {//文章列表
 					pageNum: 0,
-					pageSize: 2,
+					pageSize: 8,
 					itemid: ""
 				},
 				isLoad:false,
