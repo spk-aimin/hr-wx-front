@@ -178,7 +178,7 @@
 			}
 		}
 		.rich-content {
-			line-height: 1.4;
+			line-height: 2;
 			word-wrap: break-word;
 			img{max-width: 100%; display: block; margin: 0 auto}
 		}
