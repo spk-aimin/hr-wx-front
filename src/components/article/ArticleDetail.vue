@@ -178,7 +178,7 @@
 			}
 		}
 		.rich-content {
-			line-height: 2;
+			line-height: 1.6;
 			word-wrap: break-word;
 			img, video, object, embad{max-width: 100%; display: block; margin: 0 auto}
 		}
@@ -238,7 +238,7 @@
 				text-align: right;
 				color: #1062a9;
 				font-size: 16px;
-				line-height: 1.4;
+				line-height: 1.6;
 				a:link{
 					color: #1062a9;
 				}

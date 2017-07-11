@@ -1,9 +1,10 @@
 <template>
 	<div id= "article-list" v-if="dataList.length >0">
-		<ul class="list" >
+		<div class="list" >
 			<template v-for = "ptem in dataList">
+			<div class="list-box">
 			  <template v-for="(item, index) in ptem">
-				  	<li v-if ="index == 0" class="li1">
+				  	<div v-if ="index == 0" class="li1">
 				  	    <div class="time">
 				  	    	<span class="dd">{{item.createTime | listTime}}</span>
 				  	    </div>
@@ -13,8 +14,8 @@
 								<p class="title">{{item.title}}</p>
 							</div>
 						</router-link>
-					</li>
-					<li class="li2" v-if="index !=0">
+					</div>
+					<div class="li2" v-if="index !=0">
 						<router-link  class = 'tr' :to='{name: "article.detail", query: {id: item.id, userId: userId}}'>
 							<table>
 								<tr>
@@ -27,10 +28,11 @@
 								</tr>
 							</table>
 						</router-link>
-					</li>
+					</div>
 			  </template>
+			  </div>
 			</template>
-		</ul>
+		</div>
 		<div v-if="!isLoad&&isNext" class="load" @click = "getArticleListMore()">点击加载更多</div>
 		<div class="load" v-if="!isNext">没有更多了</div>
 		<load-more v-if="isLoad" tip='正在加载……'></load-more>
@@ -65,6 +67,18 @@
 			vm.userId = this.$route.query.userId;
 			vm.origin = window.location.origin
 			vm.getArticleList();
+			// vm.dataList = [[
+			// {createTime: '2016-05-11',
+			// 	id: 55,
+			// 	titleImage: 'sdsadsad',
+			// 	title: 'sdsadsadsa'
+			// },
+			// 	{createTime: '2016-05-11',
+			// 	id: 55,
+			// 	titleImage: 'sdsadsad',
+			// 	title: 'sdsadsadsa'
+			// }
+			// ]]
 		},
 		methods: {
 			getArticleList() {//获取文章列表
@@ -175,7 +189,14 @@
 			a:visited {
 				color: #333;
 			}
-			padding: 15px 7px 7px 7px;
+			padding: 15px 9px 7px 9px;
+			.list-box{
+				padding: 0 9px;
+				background-color: #fff; 
+				border-radius: 3px; 
+				border: solid 1px #e5e5e5; 	
+				margin-top: 60px;
+			}
 			.li1 {
 				.time {
 					position: absolute;
@@ -196,7 +217,6 @@
 				display: block;
 				padding-bottom: 7px;
 				padding-top: 7px;
-				margin-top: 60px;
 				background-color:#fff;
 				position: relative;
 				.img-box {
