@@ -53,7 +53,13 @@
 		    		 	console.log("失败");
 		    		 })
 		 		}else{
-                    wx.closeWindow();
+                     wx.closeWindow();
+                     this.$router.push({name: name, query: {
+                            itemid: itemid,
+                            id: articleid,
+                            userId: window.userInfoId
+                        }});
+                     window.history.back();
 		 		}
     	
     	}
