@@ -1,5 +1,6 @@
 <template>
-	<div id= "article-detail" v-if="isShowPage">
+<div id= "article-detail">
+	<div v-if="isShowPage">
 		<div class="atc-container" v-if="articleInfo">
 			<h2 class="atc-title">{{articleInfo.title}}</h2>
 			<div class="tm-con">
@@ -49,8 +50,13 @@
 			<div class="load" v-if="!isMoreComment">没有更多了</div>
 			<load-more v-if="isLoadComment" tip='正在加载……'></load-more>
 		</div>
-
 	</div>
+
+   <div class="swiper-container">
+		  <div class="swiper-wrapper" id="swipp">
+		  </div>
+  </div>
+</div>
 </template>
 <script>
     import {apiService, apiUrl} from '@/api'
@@ -136,10 +142,43 @@
 			}).catch((e)=>{
 				console.log(e);
 			});
-		},
-		computed: {
+
+			
+// 			vm.articleInfo = {
+// 				content: '<p><font face="楷体">　　原标题：四川凉山调查“格斗孤儿”事件 若违反《义务教育法》会依法处理</font></p>'+
+// '<p align="center"><img id="{2CD34CCD-B55A-43C8-AF8F-CF496EA08906}" alt="四川凉山调查“格斗孤儿”事件：若违法会依法处理" src="http://news.xinhuanet.com/local/2017-07/25/1121377515_15009685474491n.jpg"></p>'+
+// '<p class="pictext" align="center">　　<font color="navy" face="楷体">恩波格斗俱乐部。恩波格斗俱乐部供图。</font></p>'+
+// '<p>　　“按理说即使是孤儿也不存在上不起学，因为学费全部免了还有补助，彝族家族之间会互相管，政府还有特殊困难儿童救助资金。”25日，凉山州委书记林书成在接受中新网记者采访时表示，目前凉山正在调查“格斗孤儿”一事，如果违反《义务教育法》会依法处理。</p>'+
+// '<p align="center"><img id="{6149C5C0-E038-474E-B2D2-B008C45EEAEA}" alt="" src="http://news.xinhuanet.com/local/2017-07/25/1121377515_15009685471991n.jpg"></p>',
+// attach:{}
+// 			}
+// 			setTimeout(function(){vm.isShowPage = true;}, 1000)
 
 		},
+		computed: {
+		},
+		mounted() {
+			$("#article-detail").delegate(".rich-content img", 'click', function(){
+				var imgs = $(".rich-content img");
+				var index = $(".rich-content img").index(this);
+				console.log(index)
+				$(".swiper-container").show();
+				var html= "";
+				for(var item of imgs){
+					html += '<div class="swiper-slide"><img src="'+ $(item).attr("src") +'"/></div>'
+				}
+				$("#swipp").html(html);
+				var mySwiper = new Swiper('.swiper-container', {
+					initialSlide: index
+				});
+				$('.swiper-container').click(function(){
+					$(this).hide();
+
+				});
+
+			});
+
+		}
 	}
 </script>
 <style lang='scss'>
@@ -288,4 +327,34 @@
 			line-height: 20px
 		}
 	}
+	 .swiper-container {
+	 	display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #000;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #000;
+        
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        img{ max-width: 100%; max-height: 100%;}
+    }
 </style>

@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 //日期格式化 2010-05-03  15:23
 const dateParse = (value) => {
+	if(!value)
+		return ''
 	return value.substr(0,10);
 } 
 //日期格式化 一分钟前 一个月前
